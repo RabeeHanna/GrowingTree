@@ -1,31 +1,49 @@
 class Client {
 	constructor(c,x,y) {
+		/*PRIVATE*/
+		self = this;
+		/*PUBLIC*/
 		this.canvas = c;
-		this.max_height = x;
-		this.max_width = y;
+		this.ctx = c.getContext("2d");
+		c.setAttribute("width", x);
+		c.setAttribute("height", y);
+		this.max_width = x;
+		this.max_height = y;
 		this.x = 0;
 		this.y = 0;
-		this.ctx = this.CANVAS.getContext("2d");
-		this.ctx.moveTo(this.x, this.y);
+		this.ctx.beginPath();
+		this.setpos = function(x,y) {
+			this.ctx.moveTo(x,y);
+			this.x = x;
+			this.y = y;
+		}
+		this.setpos(x/2, y);
+
+		//Draws a line from current position to point (x,y)
+		var drawLineTo = function(x,y) {
+			self.ctx.lineTo(x,y);
+			self.ctx.stroke();
+		}
+		
+		//Draws a line with length len and angle angle
+		this.drawLineAngle = function(angle, len) {
+			drawLineTo(len * Math.cos(angle), len * Math.sin(angle))
+		}
 	}
 
-	drawLineTo(x,y):
+	
+
+
 }
 
 
-function setpos(x, y)
-	{
-		ctx.moveTo(x,y);
-		pos = [x,y];
+
+function setpos(x, y) {
+
 	}
 
-var c = document.getElementById("myCanvas");
-var HEIGHT = 600;
-var WIDTH = 600;
-var pos = [0,0];
-c.setAttribute("width", HEIGHT);
-c.setAttribute("height", WIDTH);
-var ctx = c.getContext("2d");
-setpos(round(width/2),HEIGHT);
-ctx.lineTo(0,0);
-ctx.stroke();
+window.onload = function() {
+	var client = new Client(document.getElementById("myCanvas"), 600, 600);
+	client.drawLineAngle(45, 10);
+	console.log(client)
+}
