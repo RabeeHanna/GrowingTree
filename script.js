@@ -1,8 +1,6 @@
 class Client {
 	constructor(c,x,y) {
-		/*PRIVATE*/
 		self = this;
-		/*PUBLIC*/
 		this.canvas = c;
 		this.ctx = c.getContext("2d");
 		c.setAttribute("width", x);
@@ -18,17 +16,23 @@ class Client {
 			this.y = y;
 		}
 		this.setpos(x/2, y);
-		//this.setpos(200,300);
 
-		//Draws a line from current position to point (x,y) 
 		var drawLineTo = function(x,y) {
 			self.ctx.lineTo(x,y);
 			self.x = x;
 			self.y = y;
 		}
 
-		this.drawLineAngle = function(angle, len) {
+		// Draws a line with a length of 'len' and angle 'angle' and stays at that position
+		this.draw = function(angle, len) {
 			drawLineTo(len*Math.cos(-angle) + this.x,len*Math.sin(-angle) + this.y);
+		}
+
+		// Draws a line with a length of 'len' and angle 'angle' and returns to first position
+		this.drawReturn = function(angle, len) {
+			var xy = [this.x, this.y]
+			drawLineTo(len*Math.cos(-angle) + this.x,len*Math.sin(-angle) + this.y);
+			this.setpos(xy[0], xy[1]);
 		}
 
 		//Add the drawing to the canvas
@@ -50,8 +54,10 @@ function setpos(x, y) {
 
 window.onload = function() {
 	var client = new Client(document.getElementById("myCanvas"), 600, 600);
-	client.drawLineAngle(toRadians(45), 50);
-	client.drawLineAngle(toRadians(80), 50);
+	client.draw(toRadians(45), 50);
+	client.draw(toRadians(80), 50);
+	client.drawReturn(toRadians(40), 30);
+	client.drawReturn(toRadians(60), 30);
 	client.update();
 	console.log(client)
 }
